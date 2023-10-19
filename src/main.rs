@@ -1,13 +1,13 @@
 use core::fmt;
 
 #[derive(Debug)]
-struct LinkedList<'a> {
+pub struct LinkedList<'a> {
     head: Option<Box<Node<'a>>>,
 }
 
 impl<'a> LinkedList<'a> {
-    fn new() -> Self {
-        LinkedList { head: None }
+    fn new(head: Option<Box<Node<'a>>>) -> Self {
+        Self { head }
     }
 
     fn insert_value(&self, value: i32) -> LinkedList {
@@ -43,14 +43,35 @@ impl<'a> LinkedList<'a> {
     }
 }
 
-#[cfg(test)]
-mod tests {
+#[derive(Debug)]
+struct Node<'a> {
+    value: i32,
+    next: &'a Option<Box<Node<'a>>>,
+}
 
-    #[test]
-    fn test_to_string() {
-        assert_eq!(1, 1);
+impl<'a> Node<'a> {
+    fn new(new_value: i32) -> Self {
+        Node {
+            value: new_value,
+            next: &None,
+        }
     }
 }
+
+impl<'a> fmt::Display for Node<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Node({})", self.value)
+    }
+}
+
+// #[cfg(test)]
+// mod tests {
+
+//     #[test]
+//     fn test_to_string() {
+//         let sample_list = LinkedList::new(None);
+//     }
+// }
 
 impl<'a> fmt::Display for LinkedList<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -74,30 +95,9 @@ impl<'a> fmt::Display for LinkedList<'a> {
     }
 }
 
-#[derive(Debug)]
-struct Node<'a> {
-    value: i32,
-    next: &'a Option<Box<Node<'a>>>,
-}
-
-impl<'a> Node<'a> {
-    fn new(new_value: i32) -> Self {
-        Node {
-            value: new_value,
-            next: &None,
-        }
-    }
-}
-
-impl<'a> fmt::Display for Node<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Node({})", self.value)
-    }
-}
-
 fn main() {
     let sample_node = Node::new(14);
-    let my_linked_list = LinkedList::new();
+    let my_linked_list = LinkedList::new(None);
     println!("sample_node: {}", sample_node);
     println!("LinkedList: {}", my_linked_list);
 
